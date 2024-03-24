@@ -17,7 +17,7 @@ public interface FrameworkConfigContributor {
 
     /**
      * Joins values using a separator.
-     * 
+     *
      * @param separator The separator, never <code>null</code>
      * @param strings   The values, never <code>null</code>
      * @return The joined values

@@ -39,7 +39,7 @@ public class KarafInitializer {
     /**
      * The random value generator.
      */
-    private final static SecureRandom RANDOM = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     /**
      * The contributors for the configuration of Karaf.

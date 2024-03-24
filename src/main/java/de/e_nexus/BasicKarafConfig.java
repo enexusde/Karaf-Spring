@@ -6,9 +6,14 @@ import java.util.Properties;
 
 import javax.inject.Named;
 
+/**
+ * Basic configuration for Karaf.
+ */
 @Named
 public class BasicKarafConfig implements FrameworkConfigContributor {
-
+    /**
+     * Contribute basic configuration for Karaf.
+     */
     @Override
     public void contributeKarafConfiguration(final Properties config,
             final Properties startup, final Properties features,
