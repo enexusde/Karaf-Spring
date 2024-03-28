@@ -34,9 +34,18 @@ public class TestKarafInSpring {
                 .isAssignableFrom(Class.forName(values.get(2)[1].toString()));
     }
 
-    public void testKarafStart() {
+    public void testKarafStart() throws Exception {
+
+        KarafInitializer emptyKaraf = new KarafInitializer();
+        assert !emptyKaraf.isRunning();
+        assert emptyKaraf.getFramework() == null;
+
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
                 LimitedAppConfig.class);
         ctx.start();
+        KarafInitializer ki = ctx.getBean(KarafInitializer.class);
+        assert ki.isRunning();
+        assert !ki.remove("Me not exists");
+        ki.stop();
     }
 }

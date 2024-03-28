@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -63,7 +64,7 @@ public class KarafInitializer {
      * All listeners that wait for status-change of Karaf.
      */
     @Inject
-    private final FrameworkListener[] frameworkListeners = null;
+    private final Optional<FrameworkListener[]> frameworkListeners = null;
     /**
      * The main Karaf-instance.
      */
@@ -80,7 +81,8 @@ public class KarafInitializer {
      *         otherwise
      */
     public boolean isRunning() {
-        return karaf != null && getFramework().getState() == Framework.ACTIVE;
+        return karaf != null && getFramework() != null
+                && getFramework().getState() == Framework.ACTIVE;
     }
 
     /**
@@ -117,6 +119,7 @@ public class KarafInitializer {
     @PostConstruct
     public void start() throws IOException, Exception {
         if (isRunning()) {
+            LOG.warning("Can not start! Preconditions failed!");
             return;
         }
         File temp = calcTempDir();
@@ -209,7 +212,8 @@ public class KarafInitializer {
             karaf.launch();
             Framework framework = getFramework();
             BundleContext ctx = framework.getBundleContext();
-            for (FrameworkListener listener : frameworkListeners) {
+            for (FrameworkListener listener : frameworkListeners
+                    .orElse(new FrameworkListener[0])) {
                 ctx.addFrameworkListener(listener);
             }
         } catch (Throwable ex) {
