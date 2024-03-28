@@ -23,41 +23,7 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
         jre9modules.add("java.lang.module");
         jre9modules.add("java.net.spi");
         addJavaXModules(jre9modules);
-        jre9modules.add("javafx.animation");
-        jre9modules.add("javafx.application");
-        jre9modules.add("javafx.beans");
-        jre9modules.add("javafx.beans.binding");
-        jre9modules.add("javafx.beans.property");
-        jre9modules.add("javafx.beans.property.adapter");
-        jre9modules.add("javafx.beans.value");
-        jre9modules.add("javafx.collections");
-        jre9modules.add("javafx.collections.transformation");
-        jre9modules.add("javafx.concurrent");
-        jre9modules.add("javafx.css");
-        jre9modules.add("javafx.embed.swing");
-        jre9modules.add("javafx.embed.swt");
-        jre9modules.add("javafx.event");
-        jre9modules.add("javafx.fxml");
-        jre9modules.add("javafx.geometry");
-        jre9modules.add("javafx.print");
-        jre9modules.add("javafx.scene");
-        jre9modules.add("javafx.scene.canvas");
-        jre9modules.add("javafx.scene.chart");
-        jre9modules.add("javafx.scene.control");
-        jre9modules.add("javafx.scene.control.cell");
-        jre9modules.add("javafx.scene.effect");
-        jre9modules.add("javafx.scene.image");
-        jre9modules.add("javafx.scene.input");
-        jre9modules.add("javafx.scene.layout");
-        jre9modules.add("javafx.scene.media");
-        jre9modules.add("javafx.scene.paint");
-        jre9modules.add("javafx.scene.shape");
-        jre9modules.add("javafx.scene.text");
-        jre9modules.add("javafx.scene.transform");
-        jre9modules.add("javafx.scene.web");
-        jre9modules.add("javafx.stage");
-        jre9modules.add("javafx.util");
-        jre9modules.add("javafx.util.converter");
+        addJavaFXModules(jre9modules);
         jre9modules.add("netscape.javascript");
         jre9modules.add("org.ietf.jgss");
         jre9modules.add("org.w3c.dom");
@@ -268,6 +234,44 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
 
         // config.setProperty("org.osgi.framework.system.packages.extra",
         // "de.e_nexus;version=1");
+    }
+
+    private void addJavaFXModules(final Collection<String> jre9modules) {
+        jre9modules.add("javafx.animation");
+        jre9modules.add("javafx.application");
+        jre9modules.add("javafx.beans");
+        jre9modules.add("javafx.beans.binding");
+        jre9modules.add("javafx.beans.property");
+        jre9modules.add("javafx.beans.property.adapter");
+        jre9modules.add("javafx.beans.value");
+        jre9modules.add("javafx.collections");
+        jre9modules.add("javafx.collections.transformation");
+        jre9modules.add("javafx.concurrent");
+        jre9modules.add("javafx.css");
+        jre9modules.add("javafx.embed.swing");
+        jre9modules.add("javafx.embed.swt");
+        jre9modules.add("javafx.event");
+        jre9modules.add("javafx.fxml");
+        jre9modules.add("javafx.geometry");
+        jre9modules.add("javafx.print");
+        jre9modules.add("javafx.scene");
+        jre9modules.add("javafx.scene.canvas");
+        jre9modules.add("javafx.scene.chart");
+        jre9modules.add("javafx.scene.control");
+        jre9modules.add("javafx.scene.control.cell");
+        jre9modules.add("javafx.scene.effect");
+        jre9modules.add("javafx.scene.image");
+        jre9modules.add("javafx.scene.input");
+        jre9modules.add("javafx.scene.layout");
+        jre9modules.add("javafx.scene.media");
+        jre9modules.add("javafx.scene.paint");
+        jre9modules.add("javafx.scene.shape");
+        jre9modules.add("javafx.scene.text");
+        jre9modules.add("javafx.scene.transform");
+        jre9modules.add("javafx.scene.web");
+        jre9modules.add("javafx.stage");
+        jre9modules.add("javafx.util");
+        jre9modules.add("javafx.util.converter");
     }
 
     private Collection<String> getBaseModules() {
