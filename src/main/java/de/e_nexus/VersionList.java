@@ -3,13 +3,20 @@ package de.e_nexus;
 /**
  * Wrapper for version-list.
  *
+ * <p>
+ * Will create this output in example:
+ * 
+ * <pre>
+ * version:List&lt;Version&gt;="1.0,1.1", osgi.ee
+ * </pre>
+ *
  * @param ns       The namespace, never <code>null</code>
  * @param type     The type, never <code>null</code>
  * @param scope    The scope, never <code>null</code>
  * @param versions The versions, never <code>null</code>
  */
 public record VersionList(String ns, String type, String scope,
-        Iterable<String> versions) {
+        Iterable<?> versions) {
     /**
      * Returns this version as a string.
      *
@@ -17,20 +24,21 @@ public record VersionList(String ns, String type, String scope,
      */
     public String asString() {
         StringBuilder result = new StringBuilder();
-        for (String string : versions) {
-            result.append(",");
-            result.append(string);
-        }
-        if (result.length() > 1) {
-            result = result.deleteCharAt(0);
-        }
         result.append(ns);
         if (type != null) {
             result.append(":");
             result.append(type);
         }
         result.append("=\"");
-        result.append(result);
+        boolean first = true;
+        for (var ver : versions) {
+            if (first) {
+                first = false;
+            } else {
+                result.append(",");
+            }
+            result.append(ver);
+        }
         result.append("\"");
         if (scope != null) {
             result.append(", ");

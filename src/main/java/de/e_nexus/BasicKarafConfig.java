@@ -1,10 +1,15 @@
 package de.e_nexus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.inject.Named;
+
+import org.osgi.framework.Version;
 
 /**
  * Basic configuration for Karaf.
@@ -57,166 +62,73 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
         config.setProperty("ordg.osgi.framework.bootdelegation",
                 "com.sun.*, javax.transaction, javax.transaction.xa, javax.xml.crypto, javax.xml.crypto.*, javax.security.cert, jdk.nashorn.*, sun.*, jdk.internal.reflect, jdk.internal.reflect.*, org.apache.karaf.jaas.boot, org.apache.karaf.jaas.boot.principal");
 
-        config.setProperty("eecap-1.8", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8\""));
-        config.setProperty("eecap-9", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0\""));
-        config.setProperty("eecap-10", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0\""));
-        config.setProperty("eecap-11", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0\""));
-        config.setProperty("eecap-13", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0\""));
-        config.setProperty("eecap-14", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0\""));
-        config.setProperty("eecap-15", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0\""));
-        config.setProperty("eecap-16", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0\""));
-        config.setProperty("eecap-17", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0\""));
-        config.setProperty("eecap-18", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0\""));
-        config.setProperty("eecap-19", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0\""));
-        config.setProperty("eecap-20", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0\""));
-        config.setProperty("eecap-21", join("; ", "osgi.ee",
-                "osgi.ee=\"OSGi/Minimum\"",
-                "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee",
-                "osgi.ee=\"JavaSE\"",
-                "version:List<Version>=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0\", osgi.ee",
-                "osgi.ee=\"JRE\"", "version:List<Version>=\"1.0,1.1\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact1\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact2\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0\", osgi.ee",
-                "osgi.ee=\"JavaSE/compact3\"",
-                "version:List<Version>=\"1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0\""));
-        config.setProperty("felix-capabilities",
-                "osgi.service;objectClass:List<String>=org.osgi.service.packageadmin.PackageAdmin, osgi.service;objectClass:List<String>=org.osgi.service.resolver.Resolver, osgi.service;objectClass:List<String>=org.osgi.service.startlevel.StartLevel");
+        // "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee"
+        var minVer = new VersionList("version", "List<Version>", "osgi.ee",
+                Arrays.asList(new Version("1.0"), new Version("1.1"),
+                        new Version("1.2")));
+        var baseList = new ArrayList<Version>();
+        baseList.add(new Version("1.0"));
+        baseList.add(new Version("1.1"));
+        baseList.add(new Version("1.2"));
+        baseList.add(new Version("1.3"));
+        baseList.add(new Version("1.4"));
+        baseList.add(new Version("1.5"));
+        baseList.add(new Version("1.6"));
+        baseList.add(new Version("1.7"));
+        var next = new HashMap<String, String>();
+        next.put("1.8", "1.8");
+        next.put("9", "9.0");
+        next.put("10", "10.0");
+        next.put("11", "11.0");
+        next.put("13", "13.0");
+        next.put("14", "14.0");
+        next.put("15", "15.0");
+        next.put("16", "16.0");
+        next.put("17", "17.0");
+        next.put("18", "18.0");
+        next.put("19", "19.0");
+        next.put("20", "20.0");
+        next.put("21", "21.0");
+
+        var compatList = new ArrayList<Version>();
+        for (Entry<String, String> entry : next.entrySet()) {
+            Version thisVersion = new Version(entry.getValue());
+            baseList.add(thisVersion);
+            compatList.add(thisVersion);
+            VersionList versionList = new VersionList("version",
+                    "List<Version>", "osgi.ee", baseList);
+
+            VersionList compList = new VersionList("version", "List<Version>",
+                    "osgi.ee", compatList);
+
+            constructCompatibility(config, minVer, entry, versionList,
+                    compList);
+        }
+
+        VersionList uses = new VersionList("uses", "", null,
+                Arrays.asList("org.osgi.framework"));
+        System.out.println(uses.asString());
+
+        config.setProperty("felix-capabilities", join(", ",
+                "osgi.service;objectClass:List<String>=org.osgi.service.packageadmin.PackageAdmin",
+                "osgi.service;objectClass:List<String>=org.osgi.service.resolver.Resolver",
+                "osgi.service;objectClass:List<String>=org.osgi.service.startlevel.StartLevel"));
         config.setProperty("org.osgi.framework.system.packages",
-                "org.osgi.dto;version=\"1.1\",org.osgi.resource;version=\"1.0\",org.osgi.resource.dto;version=\"1.0\";uses:=\"org.osgi.dto\",org.osgi.framework;version=\"1.10\",org.osgi.framework.dto;version=\"1.10\";uses:=\"org.osgi.dto\",org.osgi.framework.hooks.bundle;version=\"1.1\";uses:=\"org.osgi.framework\",org.osgi.framework.hooks.resolver;version=\"1.0\";uses:=\"org.osgi.framework.wiring\",org.osgi.framework.hooks.service;version=\"1.1\";uses:=\"org.osgi.framework\",org.osgi.framework.hooks.weaving;version=\"1.1\";uses:=\"org.osgi.framework.wiring\",org.osgi.framework.launch;version=\"1.2\";uses:=\"org.osgi.framework\",org.osgi.framework.namespace;version=\"1.1\";uses:=\"org.osgi.resource\",org.osgi.framework.startlevel;version=\"1.0\";uses:=\"org.osgi.framework\",org.osgi.framework.startlevel.dto;version=\"1.0\";uses:=\"org.osgi.dto\",org.osgi.framework.wiring;version=\"1.2\";uses:=\"org.osgi.framework,org.osgi.resource\",org.osgi.framework.wiring.dto;version=\"1.3\";uses:=\"org.osgi.dto,org.osgi.resource.dto\",org.osgi.service.condpermadmin;version=\"1.1.1\";uses:=\"org.osgi.framework,org.osgi.service.permissionadmin\",org.osgi.service.packageadmin;version=\"1.2\";uses:=\"org.osgi.framework\",org.osgi.service.permissionadmin;version=\"1.2\",org.osgi.service.resolver;version=\"1.1\";uses:=\"org.osgi.resource\",org.osgi.service.startlevel;version=\"1.1\";uses:=\"org.osgi.framework\",org.osgi.service.url;version=\"1.0\",org.osgi.util.tracker;version=\"1.5.2\";uses:=\"org.osgi.framework\",org.apache.karaf.version;version=\"4.4.5\",org.apache.karaf.jaas.boot.principal;uses:=javax.security.auth;version=\"4.4.5\",org.apache.karaf.jaas.boot;uses:=\"javax.security.auth,javax.security.auth.callback,javax.security.auth.login,javax.security.auth.spi,org.osgi.framework\";version=\"4.4.5\",org.apache.karaf.info;version=\"4.4.5\",${jre-${java.specification.version}}");
+                "org.osgi.dto;version=\"1.1\",org.osgi.resource;version=\"1.0\",org.osgi.resource.dto;version=\"1.0\";uses:=\"org.osgi.dto\",org.osgi.framework;version=\"1.10\",org.osgi.framework.dto;version=\"1.10\";uses:=\"org.osgi.dto\",org.osgi.framework.hooks.bundle;version=\"1.1\";"
+                        + uses.asString()
+                        + ",org.osgi.framework.hooks.resolver;version=\"1.0\";uses:=\"org.osgi.framework.wiring\",org.osgi.framework.hooks.service;version=\"1.1\";"
+                        + uses.asString()
+                        + ",org.osgi.framework.hooks.weaving;version=\"1.1\";uses:=\"org.osgi.framework.wiring\",org.osgi.framework.launch;version=\"1.2\";"
+                        + uses.asString()
+                        + ",org.osgi.framework.namespace;version=\"1.1\";uses:=\"org.osgi.resource\",org.osgi.framework.startlevel;version=\"1.0\";"
+                        + uses.asString()
+                        + ",org.osgi.framework.startlevel.dto;version=\"1.0\";uses:=\"org.osgi.dto\",org.osgi.framework.wiring;version=\"1.2\";uses:=\"org.osgi.framework,org.osgi.resource\",org.osgi.framework.wiring.dto;version=\"1.3\";uses:=\"org.osgi.dto,org.osgi.resource.dto\",org.osgi.service.condpermadmin;version=\"1.1.1\";uses:=\"org.osgi.framework,org.osgi.service.permissionadmin\",org.osgi.service.packageadmin;version=\"1.2\";"
+                        + uses.asString()
+                        + ",org.osgi.service.permissionadmin;version=\"1.2\",org.osgi.service.resolver;version=\"1.1\";uses:=\"org.osgi.resource\",org.osgi.service.startlevel;version=\"1.1\";"
+                        + uses.asString()
+                        + ",org.osgi.service.url;version=\"1.0\",org.osgi.util.tracker;version=\"1.5.2\";"
+                        + uses.asString()
+                        + ",org.apache.karaf.version;version=\"4.4.5\",org.apache.karaf.jaas.boot.principal;uses:=javax.security.auth;version=\"4.4.5\",org.apache.karaf.jaas.boot;uses:=\"javax.security.auth,javax.security.auth.callback,javax.security.auth.login,javax.security.auth.spi,org.osgi.framework\";version=\"4.4.5\",org.apache.karaf.info;version=\"4.4.5\",${jre-${java.specification.version}}");
         config.setProperty("org.osgi.framework.system.packages.extra",
                 "org.apache.karaf.branding, sun.misc, com.sun.jmx.remote.protocol, com.sun.jmx.remote.protocol.jmxmp, org.apache.karaf.jaas.boot;uses:=\"javax.security.auth,javax.security.auth.callback,javax.security.auth.login,javax.security.auth.spi,org.osgi.framework\";version=4.4.5, org.apache.karaf.jaas.boot.principal;uses:=javax.security.auth;version=4.4.5, org.apache.karaf.diagnostic.core;uses:=org.osgi.framework;version=4.4.5, org.apache.karaf.diagnostic.core.common;uses:=org.apache.karaf.diagnostic.core;version=4.4.5");
 
@@ -235,6 +147,19 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
 
         // config.setProperty("org.osgi.framework.system.packages.extra",
         // "de.e_nexus;version=1");
+    }
+
+    private void constructCompatibility(final Properties config,
+            final VersionList minVer, final Entry<String, String> entry,
+            final VersionList versionList, final VersionList compList) {
+        config.setProperty("eecap-" + entry.getKey(),
+                join("; ", "osgi.ee", "osgi.ee=\"OSGi/Minimum\"",
+                        minVer.asString(), "osgi.ee=\"JavaSE\"",
+                        versionList.asString(), "osgi.ee=\"JRE\"",
+                        "version:List<Version>=\"1.0,1.1\", osgi.ee",
+                        "osgi.ee=\"JavaSE/compact1\"", compList.asString(),
+                        "osgi.ee=\"JavaSE/compact2\"", compList.asString(),
+                        "osgi.ee=\"JavaSE/compact3\"", compList.asString()));
     }
 
     private void addJavaFXModules(final Collection<String> jre9modules) {
