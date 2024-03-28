@@ -5,10 +5,11 @@ package de.e_nexus;
  *
  * <p>
  * Will create this output in example:
- * 
- * <pre>
+ * </p>
+ *
+ * <code>
  * version:List&lt;Version&gt;="1.0,1.1", osgi.ee
- * </pre>
+ * </code>
  *
  * @param ns       The namespace, never <code>null</code>
  * @param type     The type, never <code>null</code>

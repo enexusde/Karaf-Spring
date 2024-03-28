@@ -10,12 +10,24 @@ import java.util.Properties;
 import javax.inject.Named;
 
 import org.osgi.framework.Version;
+import org.osgi.service.packageadmin.PackageAdmin;
+import org.osgi.service.resolver.Resolver;
+import org.osgi.service.startlevel.StartLevel;
 
 /**
  * Basic configuration for Karaf.
  */
 @Named
 public class BasicKarafConfig implements FrameworkConfigContributor {
+    /**
+     * Minimum JDK version.
+     */
+    private static final int JDK_MIN = 10;
+    /**
+     * Maximum JDK version.
+     */
+    private static final int JDK_MAX = 21;
+
     /**
      * Contribute basic configuration for Karaf.
      */
@@ -31,17 +43,7 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
         addJavaFXModules(jre9modules);
         jre9modules.add("netscape.javascript");
         jre9modules.add("org.ietf.jgss");
-        jre9modules.add("org.w3c.dom");
-        jre9modules.add("org.w3c.dom.bootstrap");
-        jre9modules.add("org.w3c.dom.css");
-        jre9modules.add("org.w3c.dom.events");
-        jre9modules.add("org.w3c.dom.html");
-        jre9modules.add("org.w3c.dom.ls");
-        jre9modules.add("org.w3c.dom.ranges");
-        jre9modules.add("org.w3c.dom.stylesheets");
-        jre9modules.add("org.w3c.dom.traversal");
-        jre9modules.add("org.w3c.dom.views");
-        jre9modules.add("org.w3c.dom.xpath");
+        addW3CModules(jre9modules);
         jre9modules.add("org.xml.sax");
         jre9modules.add("org.xml.sax.ext");
         jre9modules.add("org.xml.sax.helpers");
@@ -51,7 +53,7 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
         jre9modules.add("com.sun.security.sasl.util");
 
         config.setProperty("jre-9", concatAll(jre9modules));
-        for (int jdkVer = 10; jdkVer < 21; jdkVer++) {
+        for (int jdkVer = JDK_MIN; jdkVer < JDK_MAX; jdkVer++) {
             config.setProperty("jre-" + jdkVer, "${jre-9}");
         }
 
@@ -60,9 +62,114 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
 
         config.setProperty("jre-base", concatAll(baseModules));
         config.setProperty("ordg.osgi.framework.bootdelegation",
-                "com.sun.*, javax.transaction, javax.transaction.xa, javax.xml.crypto, javax.xml.crypto.*, javax.security.cert, jdk.nashorn.*, sun.*, jdk.internal.reflect, jdk.internal.reflect.*, org.apache.karaf.jaas.boot, org.apache.karaf.jaas.boot.principal");
+                join(", ", "com.sun.*", "javax.transaction",
+                        "javax.transaction.xa", "javax.xml.crypto",
+                        "javax.xml.crypto.*", "javax.security.cert",
+                        "jdk.nashorn.*", "sun.*", "jdk.internal.reflect",
+                        "jdk.internal.reflect.*", "org.apache.karaf.jaas.boot",
+                        "org.apache.karaf.jaas.boot.principal"));
 
-        // "version:List<Version>=\"1.0,1.1,1.2\", osgi.ee"
+        addVersionCompatibilties(config);
+        VersionList uses = new VersionList("uses", "", null,
+                Arrays.asList("org.osgi.framework"));
+        config.setProperty("felix-capabilities",
+                join(", ", constructCapability(PackageAdmin.class),
+                        constructCapability(Resolver.class),
+                        constructCapability(StartLevel.class)));
+        config.setProperty("org.osgi.framework.system.packages", join(";",
+                "org.osgi.dto", "version=\"1.1\",org.osgi.resource",
+                "version=\"1.0\",org.osgi.resource.dto", "version=\"1.0\"",
+                "uses:=\"org.osgi.dto\",org.osgi.framework",
+                "version=\"1.10\",org.osgi.framework.dto", "version=\"1.10\"",
+                "uses:=\"org.osgi.dto\",org.osgi.framework.hooks.bundle",
+                "version=\"1.1\"",
+                "" + uses.asString() + ",org.osgi.framework.hooks.resolver",
+                "version=\"1.0\"",
+
+                new VersionList("uses", null,
+                        "org.osgi.framework.hooks.service",
+                        Arrays.asList("org.osgi.framework.wiring")).asString(),
+                "version=\"1.1\"",
+                "" + uses.asString() + ",org.osgi.framework.hooks.weaving",
+                "version=\"1.1\"",
+                "uses:=\"org.osgi.framework.wiring\",org.osgi.framework.launch",
+                "version=\"1.2\"",
+                "" + uses.asString() + ",org.osgi.framework.namespace",
+                "version=\"1.1\"",
+                "uses:=\"org.osgi.resource\",org.osgi.framework.startlevel",
+                "version=\"1.0\"",
+                "" + uses.asString() + ",org.osgi.framework.startlevel.dto",
+                "version=\"1.0\"",
+                "uses:=\"org.osgi.dto\",org.osgi.framework.wiring",
+                "version=\"1.2\"",
+                new VersionList("uses", null, "org.osgi.framework.wiring.dto",
+                        Arrays.asList("org.osgi.framework,org.osgi.resource"))
+                        .asString(),
+                "version=\"1.3\"",
+                new VersionList("uses", null, "org.osgi.service.condpermadmin",
+                        Arrays.asList("org.osgi.dto", "org.osgi.resource.dto"))
+                        .asString(),
+                "version=\"1.1.1\"",
+                new VersionList("uses", null, "org.osgi.service.packageadmin",
+                        Arrays.asList("org.osgi.framework",
+                                "org.osgi.service.permissionadmin"))
+                        .asString(),
+                "version=\"1.2\"",
+                "" + uses.asString() + ",org.osgi.service.permissionadmin",
+                "version=\"1.2\",org.osgi.service.resolver", "version=\"1.1\"",
+                "uses:=\"org.osgi.resource\",org.osgi.service.startlevel",
+                "version=\"1.1\"",
+                "" + uses.asString() + ",org.osgi.service.url",
+                "version=\"1.0\",org.osgi.util.tracker", "version=\"1.5.2\"",
+                "" + uses.asString() + ",org.apache.karaf.version",
+                "version=\"4.4.5\",org.apache.karaf.jaas.boot.principal",
+                "uses:=javax.security.auth",
+                "version=\"4.4.5\",org.apache.karaf.jaas.boot",
+                new VersionList("uses", "", null, Arrays.asList(
+                        "javax.security.auth", "javax.security.auth.callback",
+                        "javax.security.auth.login", "javax.security.auth.spi",
+                        "org.osgi.framework")).asString(),
+                "version=\"4.4.5\",org.apache.karaf.info",
+                "version=\"4.4.5\",${jre-${java.specification.version}}"));
+
+        config.setProperty("org.osgi.framework.system.packages.extra", join(
+                ", ", "org.apache.karaf.branding", "sun.misc",
+                "com.sun.jmx.remote.protocol",
+                "com.sun.jmx.remote.protocol.jmxmp",
+                new VersionList("org.apache.karaf.jaas.boot;uses", null,
+                        "version=4.4.5",
+                        Arrays.asList("javax.security.auth",
+                                "javax.security.auth.callback",
+                                "javax.security.auth.login",
+                                "javax.security.auth.spi",
+                                "org.osgi.framework"))
+                        .asString(),
+
+                "org.apache.karaf.jaas.boot.principal;uses:="
+                        + "javax.security.auth;version=4.4.5",
+                "org.apache.karaf.diagnostic.core;uses:="
+                        + "org.osgi.framework;version=4.4.5",
+                "org.apache.karaf.diagnostic.core.common;uses:="
+                        + "org.apache.karaf.diagnostic.core;version=4.4.5"));
+
+        config.setProperty("karaf.framework", "felix");
+        config.setProperty("karaf.framework.felix",
+                "mvn:org.apache.felix/org.apache.felix.framework/7.0.5");
+        config.setProperty("org.ops4j.pax.logging.skipJUL", "true");
+        config.setProperty("org.ops4j.pax.logging.DefaultServiceLog.level",
+                "INFO");
+
+        config.setProperty("karaf.startLocalConsole", "true");
+        config.setProperty("karaf.startRemoteShell", "false");
+        config.setProperty("karaf.startlevel.bundle", "80");
+        config.setProperty("org.osgi.framework.startlevel.beginning", "100");
+        config.setProperty("org.osgi.framework.bundle.parent", "framework");
+
+        // config.setProperty("org.osgi.framework.system.packages.extra",
+        // "de.e_nexus;version=1");
+    }
+
+    private void addVersionCompatibilties(final Properties config) {
         var minVer = new VersionList("version", "List<Version>", "osgi.ee",
                 Arrays.asList(new Version("1.0"), new Version("1.1"),
                         new Version("1.2")));
@@ -89,7 +196,6 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
         next.put("19", "19.0");
         next.put("20", "20.0");
         next.put("21", "21.0");
-
         var compatList = new ArrayList<Version>();
         for (Entry<String, String> entry : next.entrySet()) {
             Version thisVersion = new Version(entry.getValue());
@@ -97,56 +203,29 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
             compatList.add(thisVersion);
             VersionList versionList = new VersionList("version",
                     "List<Version>", "osgi.ee", baseList);
-
             VersionList compList = new VersionList("version", "List<Version>",
                     "osgi.ee", compatList);
-
             constructCompatibility(config, minVer, entry, versionList,
                     compList);
         }
+    }
 
-        VersionList uses = new VersionList("uses", "", null,
-                Arrays.asList("org.osgi.framework"));
-        System.out.println(uses.asString());
+    private String constructCapability(final Class<?> c) {
+        return "osgi.service;objectClass:List<String>=" + c.getCanonicalName();
+    }
 
-        config.setProperty("felix-capabilities", join(", ",
-                "osgi.service;objectClass:List<String>=org.osgi.service.packageadmin.PackageAdmin",
-                "osgi.service;objectClass:List<String>=org.osgi.service.resolver.Resolver",
-                "osgi.service;objectClass:List<String>=org.osgi.service.startlevel.StartLevel"));
-        config.setProperty("org.osgi.framework.system.packages",
-                "org.osgi.dto;version=\"1.1\",org.osgi.resource;version=\"1.0\",org.osgi.resource.dto;version=\"1.0\";uses:=\"org.osgi.dto\",org.osgi.framework;version=\"1.10\",org.osgi.framework.dto;version=\"1.10\";uses:=\"org.osgi.dto\",org.osgi.framework.hooks.bundle;version=\"1.1\";"
-                        + uses.asString()
-                        + ",org.osgi.framework.hooks.resolver;version=\"1.0\";uses:=\"org.osgi.framework.wiring\",org.osgi.framework.hooks.service;version=\"1.1\";"
-                        + uses.asString()
-                        + ",org.osgi.framework.hooks.weaving;version=\"1.1\";uses:=\"org.osgi.framework.wiring\",org.osgi.framework.launch;version=\"1.2\";"
-                        + uses.asString()
-                        + ",org.osgi.framework.namespace;version=\"1.1\";uses:=\"org.osgi.resource\",org.osgi.framework.startlevel;version=\"1.0\";"
-                        + uses.asString()
-                        + ",org.osgi.framework.startlevel.dto;version=\"1.0\";uses:=\"org.osgi.dto\",org.osgi.framework.wiring;version=\"1.2\";uses:=\"org.osgi.framework,org.osgi.resource\",org.osgi.framework.wiring.dto;version=\"1.3\";uses:=\"org.osgi.dto,org.osgi.resource.dto\",org.osgi.service.condpermadmin;version=\"1.1.1\";uses:=\"org.osgi.framework,org.osgi.service.permissionadmin\",org.osgi.service.packageadmin;version=\"1.2\";"
-                        + uses.asString()
-                        + ",org.osgi.service.permissionadmin;version=\"1.2\",org.osgi.service.resolver;version=\"1.1\";uses:=\"org.osgi.resource\",org.osgi.service.startlevel;version=\"1.1\";"
-                        + uses.asString()
-                        + ",org.osgi.service.url;version=\"1.0\",org.osgi.util.tracker;version=\"1.5.2\";"
-                        + uses.asString()
-                        + ",org.apache.karaf.version;version=\"4.4.5\",org.apache.karaf.jaas.boot.principal;uses:=javax.security.auth;version=\"4.4.5\",org.apache.karaf.jaas.boot;uses:=\"javax.security.auth,javax.security.auth.callback,javax.security.auth.login,javax.security.auth.spi,org.osgi.framework\";version=\"4.4.5\",org.apache.karaf.info;version=\"4.4.5\",${jre-${java.specification.version}}");
-        config.setProperty("org.osgi.framework.system.packages.extra",
-                "org.apache.karaf.branding, sun.misc, com.sun.jmx.remote.protocol, com.sun.jmx.remote.protocol.jmxmp, org.apache.karaf.jaas.boot;uses:=\"javax.security.auth,javax.security.auth.callback,javax.security.auth.login,javax.security.auth.spi,org.osgi.framework\";version=4.4.5, org.apache.karaf.jaas.boot.principal;uses:=javax.security.auth;version=4.4.5, org.apache.karaf.diagnostic.core;uses:=org.osgi.framework;version=4.4.5, org.apache.karaf.diagnostic.core.common;uses:=org.apache.karaf.diagnostic.core;version=4.4.5");
-
-        config.setProperty("karaf.framework", "felix");
-        config.setProperty("karaf.framework.felix",
-                "mvn:org.apache.felix/org.apache.felix.framework/7.0.5");
-        config.setProperty("org.ops4j.pax.logging.skipJUL", "true");
-        config.setProperty("org.ops4j.pax.logging.DefaultServiceLog.level",
-                "INFO");
-
-        config.setProperty("karaf.startLocalConsole", "true");
-        config.setProperty("karaf.startRemoteShell", "false");
-        config.setProperty("karaf.startlevel.bundle", "80");
-        config.setProperty("org.osgi.framework.startlevel.beginning", "100");
-        config.setProperty("org.osgi.framework.bundle.parent", "framework");
-
-        // config.setProperty("org.osgi.framework.system.packages.extra",
-        // "de.e_nexus;version=1");
+    private void addW3CModules(final Collection<String> jre9modules) {
+        jre9modules.add("org.w3c.dom");
+        jre9modules.add("org.w3c.dom.bootstrap");
+        jre9modules.add("org.w3c.dom.css");
+        jre9modules.add("org.w3c.dom.events");
+        jre9modules.add("org.w3c.dom.html");
+        jre9modules.add("org.w3c.dom.ls");
+        jre9modules.add("org.w3c.dom.ranges");
+        jre9modules.add("org.w3c.dom.stylesheets");
+        jre9modules.add("org.w3c.dom.traversal");
+        jre9modules.add("org.w3c.dom.views");
+        jre9modules.add("org.w3c.dom.xpath");
     }
 
     private void constructCompatibility(final Properties config,
@@ -357,8 +436,8 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
         jre9modules.add("javax.swing.tree");
         jre9modules.add("javax.swing.undo");
         jre9modules.add("javax.tools");
-        jre9modules.add(
-                "javax.transaction.xa;version=\"1.1\";partial=true;mandatory:=partial");
+        jre9modules.add("javax.transaction.xa;version=\"1.1\";"
+                + "partial=true;mandatory:=partial");
         jre9modules.add("javax.transaction.xa;version=\"1.1\"");
         jre9modules.add("javax.transaction.xa;version=\"1.2\"");
         jre9modules.add("javax.transaction.xa;version=\"1.3\"");
