@@ -6,6 +6,20 @@
 	<artifactId>karaf-springWebmvc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<profiles>
+		<profile>
+			<activation>
+				<property>
+					<name>slim</name>
+				</property>
+			</activation>
+			<properties>
+				<goals>clean install
+					org.codehaus.cargo:cargo-maven3-plugin:1.10.12:run</goals>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+	</profiles>
 	<properties>
 		<maven.compiler.source>16</maven.compiler.source>
 		<maven.compiler.target>16</maven.compiler.target>
@@ -73,6 +87,11 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.framework</artifactId>
 			<version>7.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-templates</artifactId>
+			<version>3.0.21</version>
 		</dependency>
 
 		<dependency>

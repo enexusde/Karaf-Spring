@@ -159,7 +159,7 @@ public class BasicKarafConfig implements FrameworkConfigContributor {
         config.setProperty("org.ops4j.pax.logging.DefaultServiceLog.level",
                 "INFO");
 
-        config.setProperty("karaf.startLocalConsole", "true");
+        config.setProperty("karaf.startLocalConsole", "false");
         config.setProperty("karaf.startRemoteShell", "false");
         config.setProperty("karaf.startlevel.bundle", "80");
         config.setProperty("org.osgi.framework.startlevel.beginning", "100");
